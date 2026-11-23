@@ -15,7 +15,7 @@
 body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
 .serif{font-family:Fraunces,Georgia,serif}
 /* top bar */
-.nav{position:fixed;inset:0 0 auto 0;display:flex;justify-content:space-between;align-items:center;padding:20px 28px;z-index:10;mix-blend-mode:difference}
+.nav{background:linear-gradient(rgba(12,9,8,.7),rgba(12,9,8,0));position:fixed;inset:0 0 auto 0;display:flex;justify-content:space-between;align-items:center;padding:20px 28px;z-index:10;mix-blend-mode:normal}
 .nav .brand{font-family:Fraunces,Georgia,serif;font-size:19px;letter-spacing:.18em;text-transform:uppercase}
 .nav .links{display:flex;gap:26px;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink)}
 .nav .links span{opacity:.75}
@@ -108,7 +108,7 @@ footer a{color:#8f7f68;text-decoration:none}
 
 <script>
 // media bootstrap: base64 chunks -> blob URLs (GitHub Pages binary workaround)
-const MEDIA = {grill:{n:6,mime:'video/mp4'}, build:{n:7,mime:'video/mp4'}, stack:{n:8,mime:'video/mp4'}, plated:{n:5,mime:'video/mp4'}};
+const MEDIA = {grill:{n:6,mime:'video/mp4'}, build:{n:7,mime:'video/mp4'}, stack:{n:8,mime:'video/mp4'}, plated:{n:6,mime:'video/mp4'}};
 function loadScript(src){ return new Promise(res => { const el = document.createElement('script'); el.src = src; el.onload = el.onerror = () => res(); document.head.appendChild(el); }); }
 async function bootMedia(){
   window.BS = {};
