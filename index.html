@@ -109,7 +109,7 @@ footer a{color:#8f7f68;text-decoration:none}
 <script>
 // media bootstrap: base64 chunks -> blob URLs (GitHub Pages binary workaround)
 const MEDIA = {grill:{n:6,mime:'video/mp4'}, build:{n:7,mime:'video/mp4'}, stack:{n:8,mime:'video/mp4'}, plated:{n:6,mime:'video/mp4'}};
-function loadScript(src){ return new Promise(res => { const el = document.createElement('script'); el.src = src; el.onload = el.onerror = () => res(); document.head.appendChild(el); }); }
+function loadScript(src){ return new Promise(res => { const el = document.createElement('script'); el.src = src + '?v=2'; el.onload = el.onerror = () => res(); document.head.appendChild(el); }); }
 async function bootMedia(){
   window.BS = {};
   const jobs = Object.entries(MEDIA).map(async ([key, m]) => {
