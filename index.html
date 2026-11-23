@@ -1,239 +1,191 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bay Stack — Burgers, built layer by layer · Visakhapatnam</title>
-<meta name="description" content="A cinematic scroll demo for a fictional Vizag burger brand. Scroll and watch a burger come together, layer by layer.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bay Stack — Smashed. Stacked. Served.</title>
+<meta name="description" content="Smash burgers built to order in Visakhapatnam. Scroll to watch one come together.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <style>
-:root{--bg:#0b0b0d;--ink:#f2efe9;--mut:#9b978f;--acc:#f2a03d;--card:#141416;--line:#26262b}
+:root{--bg:#0c0908;--ink:#f3e9dc;--dim:#b9a88f;--amber:#ff8a3d}
 *{margin:0;padding:0;box-sizing:border-box}
-html{scrollbar-width:thin;scrollbar-color:#333 var(--bg)}
-body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-h1,h2,.serif{font-family:Fraunces,Georgia,serif;font-weight:500;letter-spacing:-.01em}
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-a{color:inherit;text-decoration:none}
-.kick{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--acc);font-weight:500}
-.big{font-size:clamp(38px,7.2vw,84px);line-height:1.04}
-.sub{color:var(--mut);font-size:clamp(15px,2.2vw,18px);line-height:1.6;max-width:34em}
-.rev{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
-.rev.on{opacity:1;transform:none}
-/* header */
-header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;mix-blend-mode:difference}
-.logo{font-family:Fraunces,serif;font-size:21px;letter-spacing:.02em}
-.logo em{color:var(--acc);font-style:normal}
-header nav{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#ddd}
-@media (max-width:640px){header nav{display:none}header{padding:14px 18px}}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+.serif{font-family:Fraunces,Georgia,serif}
+/* top bar */
+.nav{position:fixed;inset:0 0 auto 0;display:flex;justify-content:space-between;align-items:center;padding:20px 28px;z-index:10;mix-blend-mode:difference}
+.nav .brand{font-family:Fraunces,Georgia,serif;font-size:19px;letter-spacing:.18em;text-transform:uppercase}
+.nav .links{display:flex;gap:26px;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink)}
+.nav .links span{opacity:.75}
+@media(max-width:760px){.nav .links span:not(:last-child){display:none}}
 /* hero */
-.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:110px 22px 70px}
-.hero .big{margin:.35em 0 .3em}
-.hero .cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--acc);padding-bottom:6px;width:max-content}
-.hero .glow{position:absolute;right:-18vw;top:-22vh;width:70vw;height:70vw;border-radius:50%;background:radial-gradient(circle,rgba(242,160,61,.14),transparent 62%);pointer-events:none}
-.scrollhint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);animation:hint 2.6s ease-in-out infinite}
-@keyframes hint{0%,100%{transform:translate(-50%,0);opacity:.6}50%{transform:translate(-50%,8px);opacity:1}}
-/* build */
-#build{position:relative}
-.stage{height:100svh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(74vw,560px);aspect-ratio:1;border-radius:50%;
- background:radial-gradient(circle at 42% 36%,#232327,#151517 58%,#0e0e10 78%);box-shadow:0 30px 80px #00000090 inset,0 24px 60px #00000070}
-.stack{position:relative;width:min(74vw,560px);aspect-ratio:1}
-.layer{position:absolute;left:50%;top:50%;will-change:transform;pointer-events:none}
-.layer img{display:block;width:100%;height:auto;filter:saturate(1.04)}
-.shade{position:absolute;left:50%;top:50%;border-radius:50%;background:radial-gradient(ellipse at center,#000000a8,transparent 68%);opacity:0;pointer-events:none}
-.ground{position:absolute;left:50%;top:50%;transform:translate(-50%,-44%);width:66%;aspect-ratio:1.5;border-radius:50%;background:radial-gradient(ellipse at center,#000000c8,transparent 66%);opacity:.85}
-.ltag{position:absolute;left:max(22px,6vw);top:50%;transform:translateY(-50%);opacity:0;max-width:38vw}
-.ltag .n{font-size:12px;letter-spacing:.3em;color:var(--acc);text-transform:uppercase;font-weight:500}
-.ltag .t{font-family:Fraunces,serif;font-size:clamp(20px,3.4vw,34px);margin-top:6px}
-.progress{position:absolute;right:max(22px,6vw);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px}
-.progress i{width:6px;height:6px;border-radius:50%;background:#3a3a40;transition:background .3s,transform .3s}
-.progress i.on{background:var(--acc);transform:scale(1.5)}
-@media (max-width:640px){.ltag{left:18px;top:auto;bottom:9vh;transform:none;max-width:70vw}.progress{right:16px}}
-/* reveal */
-.panel{position:relative;min-height:88svh;display:flex;align-items:flex-end;overflow:hidden;margin:12vh 0}
-.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:brightness(.82) saturate(1.05)}
-.panel .veil{position:absolute;inset:0;background:linear-gradient(180deg,#0b0b0dbb 0%,#0b0b0d55 38%,#0b0b0de8 82%)}
-.panel .cap{position:relative;padding:0 max(22px,7vw) 9vh}
-/* menu */
-.menu{padding:14vh 0 10vh}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:44px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .5s}
-.card:hover{transform:translateY(-6px);border-color:#3a3a42}
-.card .ph{height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.card .ph img{max-height:100%;max-width:78%;filter:drop-shadow(0 18px 22px #00000088)}
-.card h3{font-family:Fraunces,serif;font-weight:500;font-size:21px}
-.card .pr{color:var(--acc);font-weight:500;margin-top:8px;font-size:15px}
-.card p{color:var(--mut);font-size:14px;line-height:1.55;margin-top:10px}
-.tagline{display:inline-block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#c9c5bc;border:1px solid var(--line);border-radius:99px;padding:4px 11px;margin-bottom:12px}
-/* visit */
-.visit{padding:10vh 0 12vh;text-align:center}
-.visit .big{font-size:clamp(30px,5vw,52px)}
-footer{border-top:1px solid var(--line);padding:34px 22px 44px;color:var(--mut);font-size:12.5px;line-height:1.8;text-align:center}
-footer a{border-bottom:1px dotted #555}
-.note{opacity:.75}
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6vh 24px;position:relative;z-index:2}
+.kick{letter-spacing:.42em;text-transform:uppercase;font-size:11px;color:var(--amber);font-weight:600}
+.hero h1{font-size:clamp(44px,9vw,96px);font-weight:500;line-height:1.02;margin:18px 0 14px}
+.hero h1 em{font-style:italic;color:var(--amber)}
+.hero p{color:var(--dim);font-size:clamp(14px,2.4vw,17px);max-width:520px;line-height:1.65}
+.hint{margin-top:5vh;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(7px)}}
+/* scroll film */
+#track{height:560vh;position:relative;z-index:2}
+#stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--bg)}
+.film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .18s linear;pointer-events:none}
+#plateScrim{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:4;background:linear-gradient(to top,rgba(12,9,8,.9) 0%,rgba(12,9,8,.42) 42%,rgba(12,9,8,.18) 66%,rgba(12,9,8,.05))}
+/* beats */
+.beat{position:absolute;left:50%;transform:translateX(-50%);width:max-content;max-width:88vw;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s ease;z-index:5;padding:14px 30px 16px;border-radius:20px;background:rgba(12,9,8,.68);border:1px solid rgba(255,138,61,.2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.beat.on{opacity:1}
+.beat h2{font-size:clamp(26px,4.6vw,46px);font-weight:500;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.beat h2 em{font-style:italic;color:var(--amber)}
+.beat p{color:var(--dim);font-size:clamp(13px,2vw,16px);margin-top:9px;letter-spacing:.06em}
+.beat.top{top:9svh}.beat.bot{bottom:8svh}
+/* dish card on plated */
+#dish{position:absolute;left:clamp(20px,7vw,110px);bottom:clamp(90px,16svh,150px);z-index:6;opacity:0;transition:opacity .5s ease;text-align:left;pointer-events:none;max-width:min(480px,86vw);background:rgba(12,9,8,.7);border:1px solid rgba(255,138,61,.22);border-radius:20px;padding:22px 28px 24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+#dish.on{opacity:1}
+#dish .name{font-family:Fraunces,Georgia,serif;font-size:clamp(30px,4.4vw,52px);font-weight:500;line-height:1.05;text-shadow:0 2px 20px rgba(0,0,0,.65)}
+#dish .desc{color:var(--dim);margin-top:10px;font-size:clamp(13px,1.6vw,16px);max-width:340px;line-height:1.6}
+#dish .price{font-family:Fraunces,Georgia,serif;font-size:clamp(20px,2.6vw,30px);color:var(--amber);margin-top:14px}
+.bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:120px;height:2px;background:#ffffff1f;border-radius:2px;z-index:8}
+.bar i{display:block;height:100%;width:0;background:var(--amber);border-radius:2px}
+/* outro */
+.outro{min-height:90svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:10vh 24px;position:relative;z-index:2;background:linear-gradient(#0c090800,#0c0908 22%)}
+.outro h2{font-size:clamp(34px,7vw,72px);font-weight:500;line-height:1.05}
+.outro h2 em{font-style:italic;color:var(--amber)}
+.outro p{color:var(--dim);margin-top:16px;max-width:480px;line-height:1.65;font-size:clamp(13px,2.2vw,16px)}
+.cta{margin-top:34px;display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:14px 34px;border-radius:999px;letter-spacing:.22em;text-transform:uppercase;font-size:12px;font-weight:600;text-decoration:none}
+footer{padding:44px 24px 60px;text-align:center;color:#6f6252;font-size:11.5px;line-height:1.9;position:relative;z-index:2}
+footer a{color:#8f7f68;text-decoration:none}
+#veil{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease;color:var(--dim);font-size:12px;letter-spacing:.3em;text-transform:uppercase}
 </style>
 </head>
 <body>
+<div id="veil">heating the grill…</div>
 
-<header>
-  <div class="logo">Bay Stack<em>.</em></div>
-  <nav>Visakhapatnam</nav>
-</header>
+<div class="nav">
+  <div class="brand serif">Bay Stack</div>
+  <div class="links"><span>Menu</span><span>The Grill</span><span>Visit</span></div>
+</div>
 
 <section class="hero">
-  <div class="glow"></div>
-  <div class="wrap">
-    <p class="kick rev">Flame-grilled · Vizag</p>
-    <h1 class="big rev">Burgers, built<br>layer by layer.</h1>
-    <p class="sub rev">Six honest layers over a real fire. No shortcuts, no freezers worth mentioning. Scroll, and watch one come together the way it does on our grill.</p>
-    <a class="cta rev" href="#build">Scroll to build <span>↓</span></a>
-  </div>
-  <div class="scrollhint">Scroll</div>
+  <div class="kick">Vizag Smash Burgers</div>
+  <h1 class="serif">Smashed.<br><em>Stacked.</em></h1>
+  <p>Beef pressed on a hot flat-top, cheese melted to the edge, built by hand, one layer at a time. Scroll, and watch it happen.</p>
+  <div class="hint">Scroll</div>
 </section>
 
-<section id="build">
-  <div class="stage">
-    <div class="plate"></div>
-    <div class="stack" id="stack">
-      <div class="ground" id="ground"></div>
-      <!-- layers injected -->
-    </div>
-    <div class="ltag" id="ltag"><div class="n" id="ln">01</div><div class="t" id="lt">Toasted heel</div></div>
-    <div class="progress" id="prog"></div>
-  </div>
-</section>
+<div id="track">
+  <div id="stage">
+    <video class="film" id="vFire" muted playsinline preload="auto" data-key="grill"></video>
+    <video class="film" id="vBuild" muted playsinline preload="auto" data-key="build"></video>
+    <video class="film" id="vReveal" muted playsinline preload="auto" data-key="stack"></video>
+    <video class="film" id="vPlate" muted playsinline preload="auto" data-key="plated"></video>
+    <div id="plateScrim"></div>
 
-<section class="panel rev" id="mealpanel">
-  <img id="mealimg" alt="A Bay Stack burger with fries and a fresh juice on the counter">
-  <div class="veil"></div>
-  <div class="cap">
-    <p class="kick">Then</p>
-    <h2 class="big">Gone in four bites.</h2>
-  </div>
-</section>
-
-<section class="menu wrap">
-  <p class="kick rev">The counter</p>
-  <h2 class="big rev">Pick your stack.</h2>
-  <div class="cards">
-    <div class="card rev">
-      <div class="ph"><img data-l="crown" alt=""></div>
-      <span class="tagline">Most loved</span>
-      <h3>The Bay Classic</h3>
-      <p>Flame-grilled patty, cheddar, tomato, onion, lettuce, house mayo on a toasted bun.</p>
-      <div class="pr">₹249</div>
-    </div>
-    <div class="card rev">
-      <div class="ph"><img data-l="patty" alt=""></div>
-      <span class="tagline">Heavyweight</span>
-      <h3>Double Deck</h3>
-      <p>Two patties straight off the fire, double cheddar, extra crunch. Bring an appetite.</p>
-      <div class="pr">₹349</div>
-    </div>
-    <div class="card rev">
-      <div class="ph"><img data-l="lettuce" alt=""></div>
-      <span class="tagline">From the garden</span>
-      <h3>Green Stack</h3>
-      <p>Crisp lettuce, tomato, onion and cheddar with our green chutney mayo. Light, not boring.</p>
-      <div class="pr">₹199</div>
+    <div class="beat top" id="b0"><h2 class="serif">Smashed on the <em>flat-top</em></h2><p>Fresh beef, pressed hot, cheese melting in</p></div>
+    <div class="beat top" id="b1"><h2 class="serif">Built to <em>order</em></h2><p>Cheese, tomato, crisp lettuce, one layer at a time</p></div>
+    <div class="beat top" id="b2"><h2 class="serif">Stacked <em>high</em></h2><p>Melted cheese, more patty, the crown on top</p></div>
+    <div id="dish">
+      <div class="name serif">The Bay Tower</div>
+      <div class="desc">Double smash patty, bacon, onion ring, melted cheddar, toasted bun. Served with crisp wedges.</div>
+      <div class="price">₹399</div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="visit wrap">
-  <p class="kick rev">Find us</p>
-  <h2 class="big rev">Beach Road,<br>Visakhapatnam.</h2>
-  <p class="sub rev" style="margin:18px auto 0">Evenings till late. The grill is loudest around seven.</p>
+<section class="outro">
+  <h2 class="serif">Come hungry.<br><em>Leave stacked.</em></h2>
+  <p>Bay Stack — a concept burger bar for Vizag. Built as a live demo.</p>
+  <a class="cta" href="#track">Watch it again</a>
 </section>
 
 <footer>
-  Bay Stack is a fictional demo brand built by ITPrior, Visakhapatnam.<br>
-  Food photos: <a href="https://www.pexels.com/@alleksana/" target="_blank" rel="noopener">alleksana</a> on Pexels, free to use.
-  <span class="note">No orders are taken here.</span>
+  <div>Bay Stack · demo concept · no real orders</div>
+  <div>All footage: <a href="https://www.pexels.com" target="_blank" rel="noopener">Pexels</a> (free licence)</div>
 </footer>
 
-<script src="a1.js"></script>
-<script src="a2.js"></script>
-<script src="a3.js"></script>
-<script src="a4.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<div class="bar"><i id="barfill"></i></div>
+
 <script>
-(function(){
-  // reveal on scroll
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.18});
-  document.querySelectorAll('.rev').forEach(el=>io.observe(el));
-
-  // Lenis smooth scroll + GSAP
-  gsap.registerPlugin(ScrollTrigger);
-  const lenis=new Lenis({smoothWheel:true,lerp:.09});
-  lenis.on('scroll',ScrollTrigger.update);
-  gsap.ticker.add(t=>lenis.raf(t*1000));
-  gsap.ticker.lagSmoothing(0);
-
-  // data
-  const L=[
-    {k:'heel',   t:'Toasted heel',    s:1.00, rot:-7,  w:'88%'},
-    {k:'patty',  t:'Flame-grilled patty', s:.86, rot:5, w:'76%'},
-    {k:'cheese', t:'Cheddar, two slices', s:.80, rot:-4, w:'70%'},
-    {k:'tomato_onion', t:'Tomato & onion', s:.70, rot:8, w:'62%'},
-    {k:'lettuce',t:'Crisp lettuce',   s:.92, rot:-10, w:'82%'},
-    {k:'crown',  t:'The crown',       s:.90, rot:4,  w:'80%'},
-  ];
-  const stack=document.getElementById('stack');
-  const prog=document.getElementById('prog');
-  const imgs=[],shades=[],dots=[];
-  L.forEach((l,i)=>{
-    const sh=document.createElement('div');sh.className='shade';
-    sh.style.width=`calc(${l.w} * ${l.s})`;sh.style.aspectRatio='1.6';
-    stack.appendChild(sh);shades.push(sh);
-    const d=document.createElement('div');d.className='layer';
-    d.style.width=`calc(${l.w} * ${l.s})`;d.style.zIndex=10+i;
-    d.innerHTML=`<img src="${LA[l.k]}" alt="">`;
-    stack.appendChild(d);imgs.push(d);
-    const dot=document.createElement('i');prog.appendChild(dot);dots.push(dot);
+// media bootstrap: base64 chunks -> blob URLs (GitHub Pages binary workaround)
+const MEDIA = {grill:{n:6,mime:'video/mp4'}, build:{n:7,mime:'video/mp4'}, stack:{n:8,mime:'video/mp4'}, plated:{n:5,mime:'video/mp4'}};
+function loadScript(src){ return new Promise(res => { const el = document.createElement('script'); el.src = src; el.onload = el.onerror = () => res(); document.head.appendChild(el); }); }
+async function bootMedia(){
+  window.BS = {};
+  const jobs = Object.entries(MEDIA).map(async ([key, m]) => {
+    for (let i = 0; i < m.n; i++) await loadScript(`v2/${key}${String(i).padStart(2,'0')}.js`);
+    let b64 = ''; for (let i = 0; i < m.n; i++) b64 += window.BS[`${key}${i}`] || '';
+    const raw = atob(b64); const B = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) B[i] = raw.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([B], {type: m.mime}));
+    const el = document.querySelector(`[data-key="${key}"]`); if (el) el.src = url;
   });
-  document.querySelectorAll('img[data-l]').forEach(im=>im.src=LA[im.dataset.l]);
-  document.getElementById('mealimg').src=LA.meal;
+  await Promise.all(jobs);
+}
+bootMedia();
+</script>
+<script>
+const $ = id => document.getElementById(id);
+const films = [
+  {el: $('vFire'),   dur: 5.834, from: 0.00, to: 0.25},
+  {el: $('vBuild'),  dur: 5.5, from: 0.23, to: 0.50},
+  {el: $('vReveal'), dur: 6.0, from: 0.48, to: 0.75},
+  {el: $('vPlate'),  dur: 6.0, from: 0.73, to: 0.995},
+];
+const beats = [$('b0'), $('b1'), $('b2')];
+const bwin = [[0.02,0.21],[0.26,0.47],[0.51,0.71]];
+const track = $('track'), barfill = $('barfill'), plateScrim = $('plateScrim'), dish = $('dish');
 
-  const ln=document.getElementById('ln'),lt=document.getElementById('lt');
+// veil: lift when all films can play
+let loaded = 0;
+films.forEach(f => {
+  const ok = () => { loaded++; if (loaded >= films.length) lift(); };
+  f.el.addEventListener('canplaythrough', ok, {once:true});
+  f.el.addEventListener('error', ok, {once:true});
+  f.el.load();
+});
+setTimeout(lift, 7000);
+let lifted = false;
+function lift(){
+  if (lifted) return; lifted = true;
+  const v = $('veil'); v.style.opacity = 0; setTimeout(() => v.remove(), 650);
+  start();
+}
 
-  // build timeline (scrubbed)
-  const tl=gsap.timeline({
-    scrollTrigger:{trigger:'#build',start:'top top',end:'+=520%',scrub:1.1,pin:true,anticipatePin:1,
-      onUpdate:self=>{
-        if(self.progress>0.004&&!tl._shown){tl._shown=true;gsap.fromTo('#ltag',{opacity:0,x:-16},{opacity:1,x:0,duration:.45,ease:'power2.out',overwrite:true});}
-        const idx=Math.min(L.length-1,Math.floor(self.progress*L.length*1.02));
-        const n=String(idx+1).padStart(2,'0');
-        if(lt.textContent!==L[idx].t){lt.textContent=L[idx].t;ln.textContent=n;
-          gsap.fromTo('#ltag',{opacity:0,x:-16},{opacity:1,x:0,duration:.45,ease:'power2.out',overwrite:true});}
-        dots.forEach((d,i)=>d.classList.toggle('on',self.progress>=(i+0.35)/L.length));
-      }}
-  });
-  L.forEach((l,i)=>{
-    const el=imgs[i],sh=shades[i];
-    gsap.set(el,{xPercent:-50,yPercent:-260,rotation:l.rot,opacity:0,transformOrigin:'50% 100%'});
-    gsap.set(sh,{xPercent:-50,yPercent:-32,opacity:0,scale:.5});
-    tl.fromTo(el,{yPercent:-260,opacity:0,rotation:l.rot},
-      {yPercent:-46,opacity:1,rotation:l.rot*.25,duration:1.05,ease:'power2.in'},i*2)
-      .to(el,{yPercent:-52,duration:.16,ease:'power1.out'},i*2+1.05)   // tiny compress below rest
-      .to(el,{yPercent:-50,duration:.5,ease:'elastic.out(1.4,0.45)'},i*2+1.21)
-      .fromTo(el,{scaleY:.94,scaleX:1.05},{scaleY:1,scaleX:1,duration:.5,ease:'elastic.out(1.3,0.5)'},i*2+1.21)
-      .to(sh,{opacity:.5,scale:1,duration:.7,ease:'power2.out'},i*2+.55);
-  });
-  // settle bounce of the whole stack
-  tl.to(['#ltag','#prog'],{opacity:0,duration:.3},L.length*2+.1)
-  tl.to('#stack',{y:-16,duration:.3,ease:'power2.out'},L.length*2+.2)
-    .to('#stack',{y:0,duration:.7,ease:'elastic.out(1.1,0.38)'},L.length*2+.5)
-    .to('#ground',{opacity:.6,duration:.4},L.length*2+.5);
+let lenis;
+function start(){
+  lenis = new Lenis({lerp: 0.09, smoothWheel: true});
+  function raf(t){ lenis.raf(t); tick(); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
 
-  // meal panel slow zoom-out
-  gsap.fromTo('#mealimg',{scale:1.14},{scale:1,ease:'none',
-    scrollTrigger:{trigger:'#mealpanel',start:'top bottom',end:'bottom top',scrub:true}});
-})();
+function tick(){
+  const r = track.getBoundingClientRect();
+  const total = r.height - innerHeight;
+  const p = Math.min(Math.max(-r.top / total, 0), 1);
+  barfill.style.width = (p * 100) + '%';
+
+  for (const f of films){
+    const sp = Math.min(Math.max((p - f.from) / (f.to - f.from), 0), 1);
+    const target = sp * (f.dur - 0.15);
+    if (Math.abs(f.el.currentTime - target) > 0.05){
+      try { f.el.currentTime = target; } catch(e){}
+    }
+    // visibility: full inside own window, fade across 0.04 overlaps
+    let o = 0;
+    if (p >= f.from && p <= f.to) o = 1;
+    else if (p < f.from && p > f.from - 0.04) o = 1 - (f.from - p) / 0.04;
+    else if (p > f.to && p < f.to + 0.04) o = 1 - (p - f.to) / 0.04;
+    f.el.style.opacity = o.toFixed(3);
+  }
+
+  // plated finale
+  const pp = Math.min(Math.max((p - 0.76) / 0.14, 0), 1);
+  plateScrim.style.opacity = pp.toFixed(3);
+  dish.classList.toggle('on', p > 0.86);
+
+  beats.forEach((b, i) => b.classList.toggle('on', p >= bwin[i][0] && p < bwin[i][1]));
+}
 </script>
 </body>
-  </html>
+</html>
